@@ -47,14 +47,18 @@ public class NavNode : IComparable<NavNode> {
    private Vector3 translation;
    private NavNodeEnum navigatable;
    private Vector3 nodeColor;
+        private int cost; // function of distance
+        private double distanceToSource, distanceToGoal;
+        private List<NavNode> adjacent;
+        private NavNode pathPredecessor;
 
 // constructors
 
-   /// <summary>
-   /// Make a VERTEX NavNode
-   /// </summary>
-   /// <param name="pos"> location of WAYPOINT</param>
-   public NavNode(Vector3 pos) {
+        /// <summary>
+        /// Make a VERTEX NavNode
+        /// </summary>
+        /// <param name="pos"> location of WAYPOINT</param>
+        public NavNode(Vector3 pos) {
       translation = pos;
       Navigatable = NavNodeEnum.WAYPOINT;
       }

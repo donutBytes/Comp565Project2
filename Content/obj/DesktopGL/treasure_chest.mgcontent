@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Game2/Game2/Content/treasure_chest.FBX</SourceFile>
-  <SourceTime>2017-03-12T23:23:08.3407502-07:00</SourceTime>
-  <DestFile>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Game2/Game2/Content/bin/DesktopGL/treasure_chest.xnb</DestFile>
-  <DestTime>2017-04-12T17:50:10.5230121-07:00</DestTime>
+  <SourceFile>C:/Users/Brandon/565Proj2/Comp565Project2/Content/treasure_chest.FBX</SourceFile>
+  <SourceTime>2017-05-14T20:30:17.5431196-07:00</SourceTime>
+  <DestFile>C:/Users/Brandon/565Proj2/Comp565Project2/Content/bin/DesktopGL/treasure_chest.xnb</DestFile>
+  <DestTime>2017-05-14T20:49:23.0057575-07:00</DestTime>
   <Importer>FbxImporter</Importer>
   <ImporterTime>2016-03-29T23:36:08-07:00</ImporterTime>
   <Processor>ModelProcessor</Processor>
@@ -66,7 +66,7 @@
   </Parameters>
   <Dependencies />
   <BuildAsset>
-    <string>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Game2/Game2/Content/bin/DesktopGL/Treasurechest_AO_0.xnb</string>
+    <string>C:/Users/Brandon/565Proj2/Comp565Project2/Content/bin/DesktopGL/Treasurechest_AO_0.xnb</string>
   </BuildAsset>
   <BuildOutput />
 </PipelineBuildEvent>

@@ -87,7 +87,7 @@ namespace AGMGSKv8 {
       follow.Name = "npFollow";
       above.Name =  "npAbove";
       // path is built to work on specific terrain, make from int[x,z] array pathNode
-      path = new Path(stage, grid, Path.PathType.LOOP); // continuous search path
+      path = new Path(stage, pathNode, Path.PathType.LOOP); // continuous search path
       stage.Components.Add(path);
       nextGoal = path.NextNode;  // get first path goal
       agentObject.turnToFace(nextGoal.Translation);  // orient towards the first path goal

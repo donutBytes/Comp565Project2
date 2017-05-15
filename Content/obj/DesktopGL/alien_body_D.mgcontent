@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Game2/Game2/Content/alien_body_D.dds</SourceFile>
-  <SourceTime>2000-12-31T16:01:01-08:00</SourceTime>
-  <DestFile>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Game2/Game2/Content/bin/DesktopGL/alien_body_D.xnb</DestFile>
-  <DestTime>2017-04-12T17:50:10.8449136-07:00</DestTime>
+  <SourceFile>C:/Users/Brandon/565Proj2/Comp565Project2/Content/alien_body_D.dds</SourceFile>
+  <SourceTime>2017-05-14T20:30:17.3480967-07:00</SourceTime>
+  <DestFile>C:/Users/Brandon/565Proj2/Comp565Project2/Content/bin/DesktopGL/alien_body_D.xnb</DestFile>
+  <DestTime>2017-05-14T20:49:23.108771-07:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-29T23:36:08-07:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
