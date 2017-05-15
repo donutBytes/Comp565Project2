@@ -107,6 +107,10 @@ public class Stage : Game {
 	private StreamWriter fout = null;
 	// Stage variables
 	private TimeSpan time;  // if you need to know the time see Property Time
+        //create grid of nodes
+        public List<NavNode> graphNodes = null;   //actual List of nodes
+        public int[,] grid = new int[441, 2];  //2D array to be passed into NavNode class
+
 
 
         /// <summary>
@@ -314,8 +318,30 @@ public class Stage : Game {
    /// and initialize them as well.
    /// </summary>
    protected override void Initialize() {
-      // TODO: Add your initialization logic here
-      base.Initialize();
+            // TODO: Add your initialization logic here
+
+            //Initialize 2D array for grid nodes
+            for (int v = 6, k = 0; v <= 506; v = v + 25)
+            {
+                for (int h = 6; h <= 506; k++, h = h + 25)
+                {
+                    grid[k, 0] = v;
+                    grid[k, 1] = h;
+                }
+
+            }
+            //Create list of NavNode based off of 2D Array
+            int x, z;
+            graphNodes = new List<NavNode>();
+            for (int i = 0; i < grid.Length / 2; i++)
+            {
+                x = grid[i, 0];
+                z = grid[i, 1];
+                graphNodes.Add(new NavNode(new Vector3(x * spacing, this.Terrain.surfaceHeight(x, z), z * spacing),
+                   NavNode.NavNodeEnum.WAYPOINT));
+            }
+
+            base.Initialize();
       }
 
 

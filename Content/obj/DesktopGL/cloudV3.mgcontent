@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<<<<<<< HEAD
+  <SourceFile>C:/Users/Brandon/565Proj2/Comp565Project2/Content/cloudV3.FBX</SourceFile>
+  <SourceTime>2017-05-14T20:30:17.4741128-07:00</SourceTime>
+  <DestFile>C:/Users/Brandon/565Proj2/Comp565Project2/Content/bin/DesktopGL/cloudV3.xnb</DestFile>
+  <DestTime>2017-05-14T20:49:21.0803825-07:00</DestTime>
+=======
   <SourceFile>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/cloudV3.FBX</SourceFile>
   <SourceTime>2017-03-12T18:25:59.7551103-07:00</SourceTime>
   <DestFile>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/bin/DesktopGL/cloudV3.xnb</DestFile>
   <DestTime>2017-05-13T17:58:38.2687416-07:00</DestTime>
+>>>>>>> 2a069681eda43a70e81eb541c9fc43e8db4c7da8
   <Importer>FbxImporter</Importer>
   <ImporterTime>2016-03-29T23:36:08-07:00</ImporterTime>
   <Processor>ModelProcessor</Processor>
