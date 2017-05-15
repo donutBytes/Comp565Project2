@@ -122,7 +122,7 @@ public class Stage : Game {
         private Pack pack;
         private string npAgentMovement;
 
-        private int numOfGraphNodes;
+        private int numOfGraphNodes = 441;
         /// <summary>
         /// End of added
         /// </summary>
@@ -553,9 +553,6 @@ public class Stage : Game {
              * Closest Treasure (N)
              */
 
-            // Check to see if agent is close enough to tag a treasure
-            //pickupTreasure();
-
             // Check withing radius for treasure
             searchForTreasure();
 
@@ -625,6 +622,30 @@ public class Stage : Game {
             }
             return false;
         }
+        
+        // Finds closest NavNode to the location of treasure
+        public NavNode findClosestNode(Vector3 position)
+        {
+            for(int i = 0; i < numOfGraphNodes; i++)
+            {
+                if(graphNodes[i].translation == position)
+                {
+                    return graphNodes[i];
+                }
+            }
+            return null;
+        }
+
+        // A* pathfinding algorithm
+        public List<NavNode> aStarPathFinding(NavNode source, NavNode destination)
+        {
+            List<NavNode> open = new List<NavNode>();
+            List<NavNode> closed = new List<NavNode>();
+            List<NavNode> path = new List<NavNode>();
+
+            NavNode current = source;
+            int cost = 0;
+        }
 
         // Check for treasures within radius around player
         public void searchForTreasure()
@@ -648,24 +669,26 @@ public class Stage : Game {
                         // find closest node in graph
                         for (int i = 0; i < numOfGraphNodes; i++)
                         {
+                            nodeDistance = Vector3.Distance(graphNodes[i], npAgent.AgentObject.Translation);
+
+                            if(distance < shortDist)
+                            {
+                                shortDist = distance;
+                                closestNode = graphNodes[i];
+                            }
 
                         }
                         treasure = treasureCollection[treasurePosition];
 
-                        // Get the NavNode from the graph that is located at the treasure's location
-                        treasureNode=
-                            graph.getNavNode((int)treasureBeingSearched.TreasureObject.Translation.X, (int)treasureBeingSearched.TreasureObject.Translation.Z);
+                        // Get the NavNode located at the treasure's location
+                        treasureNode = findClosestNode(treasure.position);
+                        treasurePath = new Path(this, aStarPathFinding(closestNode, treasureNode), Path.PathType.SINGLE);
 
-                        // Get the Path to the Treasure
-                        pathToTreasure = new Path(this, graph.aStarPathFinding(closestNodeToAgent, treasureNodeInGraph), Path.PathType.SINGLE);
-
-                        // Send a reference of the closest treasure to the NPAgent, so that it can
-                        // look for it and update it to "found" if the treasure is found
-                        npAgent.lookForTreasure(ref collectionOfTreasures[treasurePosition], pathToTreasure);
+                        npAgent.findTreasure(ref treasureCollection[treasurePosition], treasurePath);
 
                         // Set the NP Agent to treasure hunting
-                        npAgent.TreasureHunting = true;
-                        npAgent.OnOriginalPath = false;
+                        npAgent.treasureHunting = true;
+                        npAgent.originalPath = false;
                     }
                 }
             }
