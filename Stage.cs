@@ -111,7 +111,30 @@ public class Stage : Game {
         public List<NavNode> graphNodes = null;   //actual List of nodes
         public int[,] grid = new int[441, 2];  //2D array to be passed into NavNode class
 
+<<<<<<< HEAD
         public Stage() : base() {
+=======
+
+        /// <summary>
+        /// Added for treasure finding 
+        /// </summary>
+        private const int numberOfTreasures = 4;
+        private TreasureChest[] treasureCollection;
+        //private bool lerping;
+        private string npAgentModeStatus;
+        private const float tagDistance = 200.0f;
+        private float detectionRadius = 4000.0f;
+        private int distBetweenNodes = 25;
+        //private NavGraph graph;
+        private Pack pack;
+        private string npAgentMovement;
+        /// <summary>
+        /// End of added
+        /// </summary>
+
+
+    public Stage() : base() {
+>>>>>>> 2a069681eda43a70e81eb541c9fc43e8db4c7da8
       graphics = new GraphicsDeviceManager(this);
       Content.RootDirectory = "Content";
       graphics.SynchronizeWithVerticalRetrace = false;  // allow faster FPS
@@ -428,8 +451,28 @@ public class Stage : Game {
 		setCamera(1);  // select the "whole stage" camera
 		Components.Add(cloud);
 
-            TreasureChest treasureChest= new TreasureChest(this, "treasure", "treasure_chest");
-            Components.Add(treasureChest);
+
+        int[,] treasure = {
+            { 400,430},
+            { 442,452},
+            { 328,327},
+            { 495,482},
+        };
+
+        treasureCollection = new TreasureChest[numberOfTreasures];
+        for(int i = 0; i < numberOfTreasures; i++)
+        {
+            int x = treasure[i, 0];
+            int z = treasure[i, 1];
+
+            treasureCollection[i] = new TreasureChest(
+                this, 
+                "treasure", 
+                "treasure_chest",
+                new Vector3(x * spacing, terrain.surfaceHeight(x, z), z * spacing)
+            );
+            Components.Add(treasureCollection[i]);
+        }
 
         
       // Describe the scene created
@@ -471,9 +514,24 @@ public class Stage : Game {
 			fpsSecond = 0.0;
 			inspector.setInfo(11, agentLocation(player));
 			inspector.setInfo(12, agentLocation(npAgent));
-			// inspector lines 13 and 14 can be used to describe player and npAgent's status
-			inspector.setMatrices("player", "npAgent", player.AgentObject.Orientation, npAgent.AgentObject.Orientation);
-			}
+        
+                // Determine movement type of NPAgent
+                if(npAgent.treasureHunting)
+                {
+                    npAgentMovement = "Treasure Hunting";
+                }
+                else
+                {
+                    npAgentMovement = "Pathfinding";
+                }
+
+
+                // inspector lines 13 and 14 can be used to describe player and npAgent's status
+                inspector.setInfo(13, string.Format("This is Player info"));
+                inspector.setInfo(14, string.Format("This is NPAgent info"));
+
+            inspector.setMatrices("player", "npAgent", player.AgentObject.Orientation, npAgent.AgentObject.Orientation);
+		}
 		// Process user keyboard events that relate to the render state of the the stage
 		KeyboardState keyboardState = Keyboard.GetState();
 		if (keyboardState.IsKeyDown(Keys.Escape)) Exit();
@@ -516,7 +574,19 @@ public class Stage : Game {
 		else if (keyboardState.IsKeyDown(Keys.T) && !oldKeyboardState.IsKeyDown(Keys.T))
 		FixedStepRendering = ! FixedStepRendering;
 		oldKeyboardState = keyboardState;    // Update saved state.
-		base.Update(gameTime);  // update all GameComponents and DrawableGameComponents
+
+            // New Buttons
+            /* Lerping (L)
+             * Packing (P)
+             * Closest Treasure (N)
+             */
+
+
+            // Check withing radius for treasure
+            searchForTreasure();
+
+
+        base.Update(gameTime);  // update all GameComponents and DrawableGameComponents
 		currentCamera.updateViewMatrix();
 		}
 
@@ -545,6 +615,68 @@ public class Stage : Game {
       base.Draw(gameTime);  // draw all GameComponents and DrawableGameComponents
       }
 
+
+        // Find the location of the closest treasure to path to
+        public int closestTreasure(Vector3 position)
+        {
+            int closestTreasure = -1;
+            float maxDist = 512 * spacing;
+            float currDist;
+
+            for(int i = 0; i < numberOfTreasures; i++)
+            {
+                if (!treasureCollection[i].Tagged)
+                {
+                    currDist = Vector3.Distance(treasureCollection[i].Position, position);
+
+                    if(currDist < maxDist)
+                    {
+                        maxDist = currDist;
+                        closestTreasure = i;
+                    }
+                }
+            }
+            return closestTreasure;
+        }
+
+        // Check for untagged treasures
+        public bool untaggedTreasures()
+        {
+            for(int i = 0; i < numberOfTreasures; i++)
+            {
+                if(!treasureCollection[i].Tagged)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Check for treasures within radius around player
+        public void searchForTreasure()
+        {
+            Path treasurePath;
+            NavNode closestNode, treasureNode;
+            TreasureChest treasure;
+
+            if(!npAgent.treasureHunting)
+            {
+                if(untaggedTreasures())
+                {
+                    int treasurePosition = closestTreasure(npAgent.AgentObject.Translation);
+                    float distance = Vector3.Distance(npAgent.AgentObject.Translation, treasureCollection[treasurePosition].TreasureObject.Translation);
+                    
+                    if(distance < detectionRadius)
+                    {
+                        float nodeDistance = 0.0f;
+                        float shortDist = 100000.0f;
+                        
+                        // find closest node in graph
+                        //for()
+                    }
+                }
+            }
+        }
 
 
 	/*

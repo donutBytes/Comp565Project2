@@ -11,63 +11,64 @@ namespace AGMGSKv8
 {
     public struct TreasureNode
     {
-        public float x;
-        public float z;
+        public Vector3 position;
         public bool tagged;
 
-        public TreasureNode(float x, float z, bool tagged)
+        public TreasureNode(Vector3 position, bool tagged)
         {
-            this.x = x;
-            this.z = z;
+            this.position = position;
             this.tagged = tagged;
         }
     }
 
     public class TreasureChest : Model3D
     {
-        private TreasureNode[] treasureNode;
+        private TreasureNode treasureNode;
 
-        public TreasureChest(Stage theStage, string label, string meshFile)
+        protected Vector3 position;
+
+        protected Object3D treasureObject = null;
+        
+        //private bool tagged = false;
+
+        public TreasureChest(Stage theStage, string label, string meshFile, Vector3 position)
             : base(theStage, label, meshFile)
-        { initTreasureChest(); }
-
-
-        public void initTreasureChest()
-        {
-            isCollidable = true;
-
-            //Treasure locations
-            int[,] treasure = {
-                {400,430},
-                {810,800},
-                {710,720},
-                {547,553},
-            };
+        { 
+            isCollidable = false;
 
             //Create Treasures at all locations
-            this.treasureNode = new TreasureNode[treasure.GetLength(0)];
-            int x, z;
+            this.treasureNode = new TreasureNode(position, false);
 
-            for (int i = 0; i < treasure.GetLength(0); i++)
-            {
-                //Positions
-                x = treasure[i, 0];
-                z = treasure[i, 1];
-
-                this.treasureNode[i].x = x;
-                this.treasureNode[i].z = z;
-                this.treasureNode[i].tagged = false;
-
-                addObject(new Vector3(x * stage.Spacing, stage.Terrain.surfaceHeight(x, z), z * stage.Spacing),
-                        new Vector3(0, 1, 0),
-                        0.0f,
-                        new Vector3(1, 1, 1));
-            }
+            //Position
+            this.position = position;
+            //this.tagged = false;
+            treasureObject = addObject(
+                position,
+                new Vector3(0,1,0), 
+                .79f
+            );
         }
 
-        public TreasureNode[] getTreasureNode
+        public Object3D TreasureObject
+        {
+            get { return this.treasureObject; }
+        }
+
+        public TreasureNode getTreasureNode
         {
             get { return this.treasureNode; }
+        }
+
+        public Vector3 Position
+        {
+            get { return this.position; }
+        }
+
+        public bool Tagged
+        {
+            get { return this.treasureNode.tagged; }
+            set { this.treasureNode.tagged = true; }
+
         }
     }
 

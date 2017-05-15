@@ -4,6 +4,7 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+<<<<<<< HEAD
     <File>C:/Users/Brandon/565Proj2/Comp565Project2/Content/colorTexture.png</File>
     <File>C:/Users/Brandon/565Proj2/Comp565Project2/Content/Consolas.spritefont</File>
     <File>C:/Users/Brandon/565Proj2/Comp565Project2/Content/inspectorBackground.png</File>
@@ -24,5 +25,27 @@
     <File>C:/Users/Brandon/565Proj2/Comp565Project2/Content/alien_body_D.dds</File>
     <File>C:/Users/Brandon/565Proj2/Comp565Project2/Content/alien_eye_D.dds</File>
     <File>C:/Users/Brandon/565Proj2/Comp565Project2/Content/Treasurechest_AO.png</File>
+=======
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/colorTexture.png</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/Consolas.spritefont</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/inspectorBackground.png</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/marble.png</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/100x50x100Marker.fbx</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/100x100x100brick.fbx</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/boundingSphereV8.fbx</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/cloudV3.FBX</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/dogV6.fbx</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/magentaAvatarV6.fbx</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/redAvatarV6.fbx</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/templeV3.fbx</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/ufo.png</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/moon2.png</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/heightTexture_2.png</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/treasure_chest.FBX</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/alien.fbx</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/alien_body_D.dds</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/alien_eye_D.dds</File>
+    <File>C:/Users/Alexander/Documents/Visual Studio 2015/Projects/Project2/Game2/Content/Treasurechest_AO.png</File>
+>>>>>>> 2a069681eda43a70e81eb541c9fc43e8db4c7da8
   </SourceFiles>
 </SourceFileCollection>

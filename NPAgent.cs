@@ -57,20 +57,34 @@ namespace AGMGSKv8 {
 										 {505, 105}, {500,  95}, {490,  90},  // top, right
                                {110,  90}, {100,  95}, { 95, 105},  // top, left
 										 { 95, 480}, {100, 490}, {110, 495},  // bottom, left
-										 {495, 480} };								  // loop return
+										 {495, 480} };                                // loop return
+        
+        /// Added Variables to the NPAgent Class for Project 2
+        public bool treasureHunting;
+        private TreasureChest targetTreasure;
+        private int numberOfTaggedTreasures;
+        private Path treasurePath;
+        private NavNode nextNodeToTreasure;
+        private float tagDistance = 200.0f;
 
 
-   /// <summary>
-   /// Create a NPC. 
-   /// AGXNASK distribution has npAgent move following a Path.
-   /// </summary>
-   /// <param name="theStage"> the world</param>
-   /// <param name="label"> name of </param>
-   /// <param name="pos"> initial position </param>
-   /// <param name="orientAxis"> initial rotation axis</param>
-   /// <param name="radians"> initial rotation</param>
-   /// <param name="meshFile"> Direct X *.x Model in Contents directory </param>
-   public NPAgent(Stage theStage, string label, Vector3 pos, Vector3 orientAxis, 
+        //private NavGraph terrainGraph;
+        //private NavNode previousGoal;
+        private bool originalPath = true;
+        private bool aStarCompleted = false;
+        int count = 0;
+
+        /// <summary>
+        /// Create a NPC. 
+        /// AGXNASK distribution has npAgent move following a Path.
+        /// </summary>
+        /// <param name="theStage"> the world</param>
+        /// <param name="label"> name of </param>
+        /// <param name="pos"> initial position </param>
+        /// <param name="orientAxis"> initial rotation axis</param>
+        /// <param name="radians"> initial rotation</param>
+        /// <param name="meshFile"> Direct X *.x Model in Contents directory </param>
+        public NPAgent(Stage theStage, string label, Vector3 pos, Vector3 orientAxis, 
       float radians, string meshFile)
       : base(theStage, label, pos, orientAxis, radians, meshFile)
       {  // change names for on-screen display of current camera
@@ -119,6 +133,17 @@ namespace AGMGSKv8 {
                 }
 
             }
+            else if(treasureHunting)
+            {
+                if (targetTreasure.Tagged)
+                {
+                    treasureHunting = false;
+                }    
+                else
+                {
+
+                }
+            }
             else
             {
                 agentObject.turnToFace(nextGoal.Translation);  // adjust to face nextGoal every move
@@ -138,6 +163,8 @@ namespace AGMGSKv8 {
                     // agentObject.turnToFace(nextGoal.Translation);
                 }
             }
+
+
             //process keyboard input for exploration/path following
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.N) && !oldKeyboardState.IsKeyDown(Keys.N))
