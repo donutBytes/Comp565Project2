@@ -52,56 +52,89 @@ public class NPAgent : Agent {
 										 {505, 105}, {500,  95}, {490,  90},  // top, right
                                {110,  90}, {100,  95}, { 95, 105},  // top, left
 										 { 95, 480}, {100, 490}, {110, 495},  // bottom, left
-										 {495, 480} };								  // loop return
+										 {495, 480} };                                // loop return
+        
+        /// Added Variables to the NPAgent Class for Project 2
+        public bool treasureHunting;
+        private TreasureChest targetTreasure;
+        private int numberOfTaggedTreasures;
+        private Path treasurePath;
+        private NavNode nextNodeToTreasure;
+        private float tagDistance = 200.0f;
 
-   /// <summary>
-   /// Create a NPC. 
-   /// AGXNASK distribution has npAgent move following a Path.
-   /// </summary>
-   /// <param name="theStage"> the world</param>
-   /// <param name="label"> name of </param>
-   /// <param name="pos"> initial position </param>
-   /// <param name="orientAxis"> initial rotation axis</param>
-   /// <param name="radians"> initial rotation</param>
-   /// <param name="meshFile"> Direct X *.x Model in Contents directory </param>
-   public NPAgent(Stage theStage, string label, Vector3 pos, Vector3 orientAxis, 
+        //private NavGraph terrainGraph;
+        //private NavNode previousGoal;
+        private bool originalPath = true;
+        private bool aStarCompleted = false;
+        int count = 0;
+
+        /// <summary>
+        /// Create a NPC. 
+        /// AGXNASK distribution has npAgent move following a Path.
+        /// </summary>
+        /// <param name="theStage"> the world</param>
+        /// <param name="label"> name of </param>
+        /// <param name="pos"> initial position </param>
+        /// <param name="orientAxis"> initial rotation axis</param>
+        /// <param name="radians"> initial rotation</param>
+        /// <param name="meshFile"> Direct X *.x Model in Contents directory </param>
+        public NPAgent(Stage theStage, string label, Vector3 pos, Vector3 orientAxis, 
       float radians, string meshFile)
       : base(theStage, label, pos, orientAxis, radians, meshFile)
       {  // change names for on-screen display of current camera
-      first.Name =  "npFirst";
-      follow.Name = "npFollow";
-      above.Name =  "npAbove";
-      // path is built to work on specific terrain, make from int[x,z] array pathNode
-      path = new Path(stage, pathNode, Path.PathType.LOOP); // continuous search path
-      stage.Components.Add(path);
-      nextGoal = path.NextNode;  // get first path goal
-      agentObject.turnToFace(nextGoal.Translation);  // orient towards the first path goal
-		// set snapDistance to be a little larger than step * stepSize
-		snapDistance = (int) (1.5 * (agentObject.Step * agentObject.StepSize));
-      }   
+          first.Name =  "npFirst";
+          follow.Name = "npFollow";
+          above.Name =  "npAbove";
+          // path is built to work on specific terrain, make from int[x,z] array pathNode
+          path = new Path(stage, pathNode, Path.PathType.LOOP); // continuous search path
+          stage.Components.Add(path);
+          nextGoal = path.NextNode;  // get first path goal
+          agentObject.turnToFace(nextGoal.Translation);  // orient towards the first path goal
+		    // set snapDistance to be a little larger than step * stepSize
+	      snapDistance = (int) (1.5 * (agentObject.Step * agentObject.StepSize));
+          treasureHunting = false;
+          numberOfTaggedTreasures = 0;
+          isCollidable = true;
 
-   /// <summary>
-   /// Simple path following.  If within "snap distance" of a the nextGoal (a NavNode) 
-   /// move to the NavNode, get a new nextGoal, turnToFace() that goal.  Otherwise 
-   /// continue making steps towards the nextGoal.
-   /// </summary>
-   public override void Update(GameTime gameTime) {
-		agentObject.turnToFace(nextGoal.Translation);  // adjust to face nextGoal every move
-		// agentObject.turnTowards(nextGoal.Translation);
-		// See if at or close to nextGoal, distance measured in 2D xz plane
-		float distance = Vector3.Distance(
-			new Vector3(nextGoal.Translation.X, 0, nextGoal.Translation.Z),
-			new Vector3(agentObject.Translation.X, 0, agentObject.Translation.Z));
-		stage.setInfo(15, stage.agentLocation(this));
-      stage.setInfo(16,
-			string.Format("          nextGoal ({0:f0}, {1:f0}, {2:f0})  distance to next goal = {3,5:f2})", 
-				nextGoal.Translation.X/stage.Spacing, nextGoal.Translation.Y, nextGoal.Translation.Z/stage.Spacing, distance) );
-      if (distance  <= snapDistance)  {  
-         // snap to nextGoal and orient toward the new nextGoal 
-         nextGoal = path.NextNode;
-         // agentObject.turnToFace(nextGoal.Translation);
-         }
-      base.Update(gameTime);  // Agent's Update();
+        }
+
+        /// <summary>
+        /// Simple path following.  If within "snap distance" of a the nextGoal (a NavNode) 
+        /// move to the NavNode, get a new nextGoal, turnToFace() that goal.  Otherwise 
+        /// continue making steps towards the nextGoal.
+        /// </summary>
+        public override void Update(GameTime gameTime) {
+            float distance;
+            float distanceToTreasure;
+
+            if(treasureHunting)
+            {
+                if(targetTreasure.Tagged)
+                {
+                    treasureHunting = false;
+                }    
+                else
+                {
+
+                }
+            }
+
+            agentObject.turnToFace(nextGoal.Translation);  // adjust to face nextGoal every move
+            // agentObject.turnTowards(nextGoal.Translation);
+            // See if at or close to nextGoal, distance measured in 2D xz plane
+            distance = Vector3.Distance(
+	            new Vector3(nextGoal.Translation.X, 0, nextGoal.Translation.Z),
+	            new Vector3(agentObject.Translation.X, 0, agentObject.Translation.Z));
+            stage.setInfo(15, stage.agentLocation(this));
+            stage.setInfo(16,
+	            string.Format("nextGoal ({0:f0}, {1:f0}, {2:f0})  distance to next goal = {3,5:f2})", 
+		            nextGoal.Translation.X/stage.Spacing, nextGoal.Translation.Y, nextGoal.Translation.Z/stage.Spacing, distance) );
+            if (distance  <= snapDistance)  {  
+                // snap to nextGoal and orient toward the new nextGoal 
+                nextGoal = path.NextNode;
+             // agentObject.turnToFace(nextGoal.Translation);
+        }
+        base.Update(gameTime);  // Agent's Update();
       }
    } 
 }
