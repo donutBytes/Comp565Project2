@@ -119,9 +119,10 @@ public class Stage : Game {
         private const float tagDistance = 200.0f;
         private float detectionRadius = 4000.0f;
         private int distBetweenNodes = 25;
-        //private NavGraph graph;
         private Pack pack;
         private string npAgentMovement;
+
+        private int numOfGraphNodes;
         /// <summary>
         /// End of added
         /// </summary>
@@ -552,6 +553,8 @@ public class Stage : Game {
              * Closest Treasure (N)
              */
 
+            // Check to see if agent is close enough to tag a treasure
+            //pickupTreasure();
 
             // Check withing radius for treasure
             searchForTreasure();
@@ -641,9 +644,28 @@ public class Stage : Game {
                     {
                         float nodeDistance = 0.0f;
                         float shortDist = 100000.0f;
-                        
+
                         // find closest node in graph
-                        //for()
+                        for (int i = 0; i < numOfGraphNodes; i++)
+                        {
+
+                        }
+                        treasure = treasureCollection[treasurePosition];
+
+                        // Get the NavNode from the graph that is located at the treasure's location
+                        treasureNode=
+                            graph.getNavNode((int)treasureBeingSearched.TreasureObject.Translation.X, (int)treasureBeingSearched.TreasureObject.Translation.Z);
+
+                        // Get the Path to the Treasure
+                        pathToTreasure = new Path(this, graph.aStarPathFinding(closestNodeToAgent, treasureNodeInGraph), Path.PathType.SINGLE);
+
+                        // Send a reference of the closest treasure to the NPAgent, so that it can
+                        // look for it and update it to "found" if the treasure is found
+                        npAgent.lookForTreasure(ref collectionOfTreasures[treasurePosition], pathToTreasure);
+
+                        // Set the NP Agent to treasure hunting
+                        npAgent.TreasureHunting = true;
+                        npAgent.OnOriginalPath = false;
                     }
                 }
             }
