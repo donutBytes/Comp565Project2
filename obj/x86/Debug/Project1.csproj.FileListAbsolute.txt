@@ -65,3 +65,4 @@ C:\Users\Alexander\Documents\Visual Studio 2015\Projects\Project2\Game2\bin\Desk
 C:\Users\Alexander\Documents\Visual Studio 2015\Projects\Project2\Game2\bin\DesktopGL\x86\Debug\OpenTK.dll
 C:\Users\Alexander\Documents\Visual Studio 2015\Projects\Project2\Game2\obj\x86\Debug\Game2.exe
 C:\Users\Alexander\Documents\Visual Studio 2015\Projects\Project2\Game2\obj\x86\Debug\Game2.pdb
+C:\Users\Alexander\Documents\Visual Studio 2015\Projects\Project2\Game2\obj\x86\Debug\Project1.csprojResolveAssemblyReference.cache
