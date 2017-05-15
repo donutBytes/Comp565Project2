@@ -30,20 +30,25 @@ using Microsoft.Xna.Framework.Input;
 
 namespace AGMGSKv8 {
 
-/// <summary>
-/// A non-playing character that moves.  Override the inherited Update(GameTime)
-/// to implement a movement (strategy?) algorithm.
-/// Distribution NPAgent moves along an "exploration" path that is created by the
-/// from int[,] pathNode array.  The exploration path is traversed in a reverse path loop.
-/// Paths can also be specified in text files of Vector3 values, see alternate
-/// Path class constructors.
-/// 
-/// 1/20/2016 last changed
-/// </summary>
-public class NPAgent : Agent {
-   private NavNode nextGoal;
-   private Path path;
-   private int snapDistance = 20;  // this should be a function of step and stepSize
+    /// <summary>
+    /// A non-playing character that moves.  Override the inherited Update(GameTime)
+    /// to implement a movement (strategy?) algorithm.
+    /// Distribution NPAgent moves along an "exploration" path that is created by the
+    /// from int[,] pathNode array.  The exploration path is traversed in a reverse path loop.
+    /// Paths can also be specified in text files of Vector3 values, see alternate
+    /// Path class constructors.
+    /// 
+    /// 1/20/2016 last changed
+    /// </summary>
+    public class NPAgent : Agent {
+        private KeyboardState oldKeyboardState;
+        private bool explore;
+
+        private NavNode nextGoal;
+        private Path path;
+        private int snapDistance = 20;  // this should be a function of step and stepSize
+        private int[,] grid = new int[441,2];
+
 	// If using makePath(int[,]) set WayPoint (x, z) vertex positions in the following array
 	private int[,] pathNode = { {505, 490}, {500, 500}, {490, 505},  // bottom, right
 										 {435, 505}, {425, 500}, {420, 490},  // bottom, middle
@@ -53,6 +58,7 @@ public class NPAgent : Agent {
                                {110,  90}, {100,  95}, { 95, 105},  // top, left
 										 { 95, 480}, {100, 490}, {110, 495},  // bottom, left
 										 {495, 480} };								  // loop return
+
 
    /// <summary>
    /// Create a NPC. 
@@ -68,16 +74,26 @@ public class NPAgent : Agent {
       float radians, string meshFile)
       : base(theStage, label, pos, orientAxis, radians, meshFile)
       {  // change names for on-screen display of current camera
+            for(int v = 6, k = 0; v <= 506; v = v + 25)
+            {
+                for (int h = 6; h <= 506; k++, h = h + 25)
+                {
+                    grid[k, 0] = v;
+                    grid[k, 1] = h;
+                }
+
+            }
       first.Name =  "npFirst";
       follow.Name = "npFollow";
       above.Name =  "npAbove";
       // path is built to work on specific terrain, make from int[x,z] array pathNode
-      path = new Path(stage, pathNode, Path.PathType.LOOP); // continuous search path
+      path = new Path(stage, grid, Path.PathType.LOOP); // continuous search path
       stage.Components.Add(path);
       nextGoal = path.NextNode;  // get first path goal
       agentObject.turnToFace(nextGoal.Translation);  // orient towards the first path goal
 		// set snapDistance to be a little larger than step * stepSize
 		snapDistance = (int) (1.5 * (agentObject.Step * agentObject.StepSize));
+            random = new Random();
       }   
 
    /// <summary>
@@ -86,22 +102,50 @@ public class NPAgent : Agent {
    /// continue making steps towards the nextGoal.
    /// </summary>
    public override void Update(GameTime gameTime) {
-		agentObject.turnToFace(nextGoal.Translation);  // adjust to face nextGoal every move
-		// agentObject.turnTowards(nextGoal.Translation);
-		// See if at or close to nextGoal, distance measured in 2D xz plane
-		float distance = Vector3.Distance(
-			new Vector3(nextGoal.Translation.X, 0, nextGoal.Translation.Z),
-			new Vector3(agentObject.Translation.X, 0, agentObject.Translation.Z));
-		stage.setInfo(15, stage.agentLocation(this));
-      stage.setInfo(16,
-			string.Format("          nextGoal ({0:f0}, {1:f0}, {2:f0})  distance to next goal = {3,5:f2})", 
-				nextGoal.Translation.X/stage.Spacing, nextGoal.Translation.Y, nextGoal.Translation.Z/stage.Spacing, distance) );
-      if (distance  <= snapDistance)  {  
-         // snap to nextGoal and orient toward the new nextGoal 
-         nextGoal = path.NextNode;
-         // agentObject.turnToFace(nextGoal.Translation);
-         }
-      base.Update(gameTime);  // Agent's Update();
-      }
+            if (explore)
+            {
+                float angle = 0.3f;
+                foreach (Object3D obj in instance)
+                {
+                    obj.Yaw = 0.0f;
+                    // change direction 4 time a second  0.07 = 4/60
+                    if (random.NextDouble() < 0.07)
+                    {
+                        if (random.NextDouble() < 0.5) obj.Yaw -= angle; // turn left
+                        else obj.Yaw += angle; // turn right
+                    }
+                    obj.updateMovableObject();
+                    stage.setSurfaceHeight(obj);
+                }
+
+            }
+            else
+            {
+                agentObject.turnToFace(nextGoal.Translation);  // adjust to face nextGoal every move
+                                                               // agentObject.turnTowards(nextGoal.Translation);
+                                                               // See if at or close to nextGoal, distance measured in 2D xz plane
+                float distance = Vector3.Distance(
+                    new Vector3(nextGoal.Translation.X, 0, nextGoal.Translation.Z),
+                    new Vector3(agentObject.Translation.X, 0, agentObject.Translation.Z));
+                stage.setInfo(15, stage.agentLocation(this));
+                stage.setInfo(16,
+                      string.Format("          nextGoal ({0:f0}, {1:f0}, {2:f0})  distance to next goal = {3,5:f2})",
+                          nextGoal.Translation.X / stage.Spacing, nextGoal.Translation.Y, nextGoal.Translation.Z / stage.Spacing, distance));
+                if (distance <= snapDistance)
+                {
+                    // snap to nextGoal and orient toward the new nextGoal 
+                    nextGoal = path.NextNode;
+                    // agentObject.turnToFace(nextGoal.Translation);
+                }
+            }
+            //process keyboard input for exploration/path following
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.N) && !oldKeyboardState.IsKeyDown(Keys.N))
+                explore = !explore;
+            oldKeyboardState = keyboardState;
+
+                
+            base.Update(gameTime);
+        }
    } 
 }
